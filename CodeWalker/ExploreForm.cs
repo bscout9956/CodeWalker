@@ -1,4 +1,4 @@
-﻿using CodeWalker.Forms;
+using CodeWalker.Forms;
 using CodeWalker.GameFiles;
 using CodeWalker.Properties;
 using CodeWalker.Tools;
@@ -288,6 +288,7 @@ namespace CodeWalker
             InitFileType(".exe", "Executable", 10);
             InitFileType(".yft", "Fragment", 11, FileTypeAction.ViewModel, true);
             InitFileType(".ydr", "Drawable", 11, FileTypeAction.ViewModel, true);
+            InitFileType(".cdr", "Drawable", 11, FileTypeAction.ViewModel, true);
             InitFileType(".ydd", "Drawable Dictionary", 12, FileTypeAction.ViewModel, true);
             InitFileType(".cut", "Cutscene", 12, FileTypeAction.ViewCut, true);
             InitFileType(".ysc", "Script", 13);
@@ -1683,6 +1684,10 @@ namespace CodeWalker
             f.Show();
             switch (fe)
             {
+                case ".cdr":
+                    var cdr = RpfFile.GetFile<CdrFile>(e, data);
+                    f.LoadModel(cdr);
+                    break;
                 case ".ydr":
                     var ydr = RpfFile.GetFile<YdrFile>(e, data);
                     f.LoadModel(ydr);
