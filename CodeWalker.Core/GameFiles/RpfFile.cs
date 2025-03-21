@@ -1,4 +1,4 @@
-﻿using System;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.IO;
@@ -710,6 +710,24 @@ namespace CodeWalker.GameFiles
             file.Load(data, resentry);
 
         }
+
+        private static int GetVersion(ref byte[] data, bool bigEndian)
+        {
+            int version = 0;
+            if (bigEndian)
+            {
+                version = BitConverter.ToInt32(data, 4);
+                byte[] versionTemp = BitConverter.GetBytes(version);
+                Array.Reverse(versionTemp);
+                version = BitConverter.ToInt32(versionTemp, 0);
+            }
+            else
+            {
+                version = BitConverter.ToInt32(data, 4); //use this instead of what was given...
+            }
+            return version;
+        }
+
         public static RpfResourceFileEntry CreateResourceFileEntry(ref byte[] data, uint ver)
         {
             var resentry = new RpfResourceFileEntry();
