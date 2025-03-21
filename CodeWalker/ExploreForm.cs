@@ -53,6 +53,8 @@ namespace CodeWalker
 
         public ThemeBase Theme { get; private set; }
 
+        private const int RSC7_LE_HEADER_MAGIC = 0x37435352;
+        private const int RSC7_BE_HEADER_MAGIC = 0x52534337;
 
         public ExploreForm()
         {
