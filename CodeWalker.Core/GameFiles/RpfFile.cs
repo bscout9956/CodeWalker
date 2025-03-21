@@ -58,6 +58,8 @@ namespace CodeWalker.GameFiles
         public uint GrandTotalBinaryFileCount { get; set; }
         public long ExtractedByteCount { get; set; }
 
+        public const int RSC7_LE_HEADER_MAGIC = 0x37435352;
+        public const int RSC7_BE_HEADER_MAGIC = 0x52534337;
 
         public RpfFile(string fpath, string relpath) //for a ROOT filesystem RPF
         {
