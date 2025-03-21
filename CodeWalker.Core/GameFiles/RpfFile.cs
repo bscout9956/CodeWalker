@@ -734,27 +734,25 @@ namespace CodeWalker.GameFiles
 
             //hopefully this data has an RSC7 header...
             uint rsc7 = BitConverter.ToUInt32(data, 0);
-            if (rsc7 == 0x37435352) //RSC7 header present!
+            if (rsc7 == RSC7_LE_HEADER_MAGIC) //RSC7 header present!
             {
-                int version = BitConverter.ToInt32(data, 4);//use this instead of what was given...
-                resentry.SystemFlags = BitConverter.ToUInt32(data, 8);
-                resentry.GraphicsFlags = BitConverter.ToUInt32(data, 12);
-                if (data.Length > 16)
-                {
-                    int newlen = data.Length - 16; //trim the header from the data passed to the next step.
-                    byte[] newdata = new byte[newlen];
-                    Buffer.BlockCopy(data, 16, newdata, 0, newlen);
-                    data = newdata;
-                }
-                //else
-                //{
-                //    data = null; //shouldn't happen... empty..
-                //}
+                int version = GetVersion(ref data, false);
+                resentry.SystemFlags = RpfResourceFileEntry.GetResourcePageFlags(ref data, 8, false);
+                resentry.GraphicsFlags = RpfResourceFileEntry.GetResourcePageFlags(ref data, 12, false);
+                TrimHeader(ref data);
+            }
+            else if (rsc7 == RSC7_BE_HEADER_MAGIC)
+            {
+                int version = GetVersion(ref data, true);
+                resentry.SystemFlags = RpfResourceFileEntry.GetResourcePageFlags(ref data, 8, true);
+                resentry.GraphicsFlags = RpfResourceFileEntry.GetResourcePageFlags(ref data, 12, true);
+                TrimHeader(ref data);
             }
             else
             {
                 //direct load from file without the rpf header..
                 //assume it's in resource meta format
+                // BS: Hell, we aren't doing checks for LE/BE shit, wtf is going to happen?
                 resentry.SystemFlags = RpfResourceFileEntry.GetFlagsFromSize(data.Length, 0);
                 resentry.GraphicsFlags = RpfResourceFileEntry.GetFlagsFromSize(0, ver);
             }
