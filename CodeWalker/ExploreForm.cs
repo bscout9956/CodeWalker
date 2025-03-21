@@ -1845,9 +1845,14 @@ namespace CodeWalker
             //this should only really be used when loading a file from the filesystem.
             RpfFileEntry e = null;
             uint rsc7 = (data?.Length > 4) ? BitConverter.ToUInt32(data, 0) : 0;
-            if (rsc7 == 0x37435352) //RSC7 header present! create RpfResourceFileEntry and decompress data...
+            if (rsc7 == RSC7_LE_HEADER_MAGIC) //RSC7 header present! create RpfResourceFileEntry and decompress data...
             {
                 e = RpfFile.CreateResourceFileEntry(ref data, 0);//"version" should be loadable from the header in the data..
+                data = ResourceBuilder.Decompress(data);
+            }
+            else if (rsc7 == RSC7_BE_HEADER_MAGIC)
+            {
+                e = RpfFile.CreateResourceFileEntry(ref data, 0);
                 data = ResourceBuilder.Decompress(data);
             }
             else
