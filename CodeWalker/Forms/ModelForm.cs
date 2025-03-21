@@ -70,6 +70,7 @@ namespace CodeWalker.Forms
         }
         public string FilePath { get; set; }
 
+        CdrFile Cdr = null;
         YdrFile Ydr = null;
         YddFile Ydd = null;
         YftFile Yft = null;
@@ -732,12 +733,41 @@ namespace CodeWalker.Forms
 
         }
 
+        public void LoadModel(CdrFile cdr)
+        {
+            if (cdr == null) return;
 
+            FileName = cdr.Name;
+            Cdr = cdr;
+            rpfFileEntry = Cdr.RpfFileEntry;
+            ModelHash = Cdr.RpfFileEntry?.ShortNameHash ?? 0;
+            if (ModelHash != 0)
+            {
+                ModelArchetype = TryGetArchetype(ModelHash);
+            }
 
+            if (cdr.Drawable != null)
+            {
+                var cen = cdr.Drawable.BoundingCenter;
+                var rad = cdr.Drawable.BoundingSphereRadius;
+                if (ModelArchetype != null)
+                {
+                    cen = ModelArchetype.BSCenter;
+                    rad = ModelArchetype.BSRadius;
+                }
 
+                MoveCameraToView(cen, rad);
 
+                Skeleton = cdr.Drawable.Skeleton;
+            }
 
+            if (cdr.Drawable?.LightAttributes.data_items.Length > 0)
+            {
+                DeferredShadingCheckBox.Checked = true;
+            }
 
+            UpdateModelsUI(cdr.Drawable);
+        }
 
         public void LoadModel(YdrFile ydr)
         {
@@ -2132,7 +2162,7 @@ namespace CodeWalker.Forms
             {
                 if (GrabbedWidget == null)
                 {
-                        camera.MouseRotate(dx, dy);
+                    camera.MouseRotate(dx, dy);
                 }
             }
             if (MouseRButtonDown)
@@ -2171,7 +2201,7 @@ namespace CodeWalker.Forms
             {
                 //if (ControlMode == WorldControlMode.Free)
                 //{
-                    camera.MouseZoom(e.Delta);
+                camera.MouseZoom(e.Delta);
                 //}
                 //else
                 //{
