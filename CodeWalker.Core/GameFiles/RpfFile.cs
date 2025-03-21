@@ -2551,6 +2551,17 @@ namespace CodeWalker.GameFiles
             return (int)((sv << 4) + gv);
         }
 
+        public static RpfResourcePageFlags GetResourcePageFlags(ref byte[] data, int startIndex, bool bigEndian)
+        {
+
+            RpfResourcePageFlags systemFlags;
+            if (bigEndian)
+            {
+                Array.Reverse(data, startIndex, 4);
+            }
+            systemFlags = BitConverter.ToUInt32(data, startIndex);
+            return systemFlags;
+        }
 
         public int Version
         {
