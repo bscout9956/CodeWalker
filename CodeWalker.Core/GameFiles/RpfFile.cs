@@ -765,7 +765,20 @@ namespace CodeWalker.GameFiles
             return resentry;
         }
 
-
+        private static void TrimHeader(ref byte[] data)
+        {
+            if (data.Length > 16)
+            {
+                int newlen = data.Length - 16; //trim the header from the data passed to the next step.
+                byte[] newdata = new byte[newlen];
+                Buffer.BlockCopy(data, 16, newdata, 0, newlen);
+                data = newdata;
+            }
+            //else
+            //{
+            //    data = null; //shouldn't happen... empty..
+            //}
+        }
 
         public string TestExtractAllFiles()
         {
