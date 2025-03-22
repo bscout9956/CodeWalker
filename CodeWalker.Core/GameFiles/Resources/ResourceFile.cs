@@ -58,7 +58,14 @@ namespace CodeWalker.GameFiles
             // read structure data
             this.FileVFT = reader.ReadUInt32();
             this.FileUnknown = reader.ReadUInt32();
-            this.FilePagesInfoPointer = reader.ReadUInt64();
+            if (reader.IsGen7) // Gen7 used a 32bit pointer
+            {
+                this.FilePagesInfoPointer = reader.ReadUInt32();
+            }
+            else
+            {
+                this.FilePagesInfoPointer = reader.ReadUInt64();
+            }
 
             // read reference data
             this.FilePagesInfo = reader.ReadBlockAt<ResourcePagesInfo>(
