@@ -761,7 +761,14 @@ namespace CodeWalker.GameFiles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
+            if (reader.IsGen7)
+            {
+                this.EntriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.EntriesPointer = reader.ReadUInt64();
+            }
             this.EntriesCount = reader.ReadUInt16();
             this.EntriesCapacity = reader.ReadUInt16();
             reader.Position += 4;
