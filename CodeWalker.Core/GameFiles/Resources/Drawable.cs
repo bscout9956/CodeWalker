@@ -3804,6 +3804,8 @@ namespace CodeWalker.GameFiles
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
+            // From here I don't find it possible to read Gen7 data, something just doesn't make sense for me.
+
             // read structure data
             this.VFT = reader.ReadUInt32();
             this.Unknown_4h = reader.ReadUInt32();
@@ -6102,18 +6104,38 @@ namespace CodeWalker.GameFiles
             base.Read(reader, parameters);
 
             // read structure data
+            if (reader.IsGen7)
+            {
+                // Which one is it?
+                //this.ShaderGroupPointer = reader.ReadUInt32();
+                this.SkeletonPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.ShaderGroupPointer = reader.ReadUInt64();
             this.SkeletonPointer = reader.ReadUInt64();
+            }
+
             this.BoundingCenter = reader.ReadVector3();
             this.BoundingSphereRadius = reader.ReadSingle();
             this.BoundingBoxMin = reader.ReadVector3();
-            this.Unknown_3Ch = reader.ReadUInt32();
+            this.Unknown_3Ch = reader.ReadUInt32(); // padding bytes
             this.BoundingBoxMax = reader.ReadVector3();
-            this.Unknown_4Ch = reader.ReadUInt32();
+            this.Unknown_4Ch = reader.ReadUInt32(); // padding bytes
+            if (reader.IsGen7)
+            {
+                this.DrawableModelsHighPointer = reader.ReadUInt32();
+                this.DrawableModelsMediumPointer = reader.ReadUInt32();
+                this.DrawableModelsLowPointer = reader.ReadUInt32();
+                this.DrawableModelsVeryLowPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.DrawableModelsHighPointer = reader.ReadUInt64();
             this.DrawableModelsMediumPointer = reader.ReadUInt64();
             this.DrawableModelsLowPointer = reader.ReadUInt64();
             this.DrawableModelsVeryLowPointer = reader.ReadUInt64();
+            }
             this.LodDistHigh = reader.ReadSingle();
             this.LodDistMed = reader.ReadSingle();
             this.LodDistLow = reader.ReadSingle();
@@ -6122,12 +6144,25 @@ namespace CodeWalker.GameFiles
             this.RenderMaskFlagsMed = reader.ReadUInt32();
             this.RenderMaskFlagsLow = reader.ReadUInt32();
             this.RenderMaskFlagsVlow = reader.ReadUInt32();
+            if (reader.IsGen7)
+            {
+                this.JointsPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.JointsPointer = reader.ReadUInt64();
+            }
             this.Unknown_98h = reader.ReadUInt16();
             this.DrawableModelsBlocksSize = reader.ReadUInt16();
             this.Unknown_9Ch = reader.ReadUInt32();
+            if (reader.IsGen7)
+            {
+                this.DrawableModelsPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.DrawableModelsPointer = reader.ReadUInt64();
-
+            }
             // read reference data
             this.ShaderGroup = reader.ReadBlockAt<ShaderGroup>(this.ShaderGroupPointer);
             this.Skeleton = reader.ReadBlockAt<Skeleton>(this.SkeletonPointer);
