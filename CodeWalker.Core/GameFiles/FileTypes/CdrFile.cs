@@ -39,7 +39,10 @@ namespace CodeWalker.GameFiles
                 throw new Exception("File entry wasn't a resource! (is it binary data?)");
             }
 
-            ResourceDataReader rd = new ResourceDataReader(resentry, data, Endianess.BigEndian);
+            ResourceDataReader rd = new ResourceDataReader(resentry, data, Endianess.BigEndian)
+            {
+                IsGen7 = true
+            };
 
             if (rd.IsGen9)
             {
