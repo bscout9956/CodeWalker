@@ -3103,8 +3103,50 @@ namespace CodeWalker.GameFiles
             var vlowPointer = (Owner?.DrawableModelsVeryLowPointer ?? 0);
             var extraPointer = (pos != highPointer) ? pos : 0;
 
+            // Bad code ahead, brace for impact
+
+            if (reader.IsGen7)
+            {
             if (highPointer != 0)
             {
+                    HighHeader = (ResourcePointerListHeader)reader.ReadStructAt<ResourcePointerListHeaderGen7>((long)highPointer);
+                    uint[] fetchedUints = reader.ReadUintsAt(HighHeader.Pointer, HighHeader.Capacity, false);
+                    HighPointers = UintsToUlongs(SwapEndiannessUints(fetchedUints));
+                    High = reader.ReadBlocks<DrawableModel>(HighPointers);
+                }
+                if (medPointer != 0)
+                {
+                    MedHeader = (ResourcePointerListHeader)reader.ReadStructAt<ResourcePointerListHeaderGen7>((long)medPointer);
+                    uint[] fetchedUints = reader.ReadUintsAt(MedHeader.Pointer, MedHeader.Capacity, false);
+                    MedPointers = UintsToUlongs(SwapEndiannessUints(fetchedUints));
+                    Med = reader.ReadBlocks<DrawableModel>(MedPointers);
+                }
+                if (lowPointer != 0)
+                {
+                    LowHeader = (ResourcePointerListHeader)reader.ReadStructAt<ResourcePointerListHeaderGen7>((long)lowPointer);
+                    uint[] fetchedUints = reader.ReadUintsAt(LowHeader.Pointer, LowHeader.Capacity, false);
+                    LowPointers = UintsToUlongs(SwapEndiannessUints(fetchedUints));
+                    Low = reader.ReadBlocks<DrawableModel>(LowPointers);
+                }
+                if (vlowPointer != 0)
+                {
+                    VLowHeader = (ResourcePointerListHeader)reader.ReadStructAt<ResourcePointerListHeaderGen7>((long)vlowPointer);
+                    uint[] fetchedUints = reader.ReadUintsAt(VLowHeader.Pointer, VLowHeader.Capacity, false);
+                    VLowPointers = UintsToUlongs(SwapEndiannessUints(fetchedUints));
+                    VLow = reader.ReadBlocks<DrawableModel>(VLowPointers);
+                }
+                if (extraPointer != 0)
+                {
+                    ExtraHeader = (ResourcePointerListHeader)reader.ReadStructAt<ResourcePointerListHeaderGen7>((long)extraPointer);
+                    uint[] fetchedUints = reader.ReadUintsAt(ExtraHeader.Pointer, ExtraHeader.Capacity, false);
+                    ExtraPointers = UintsToUlongs(SwapEndiannessUints(fetchedUints));
+                    Extra = reader.ReadBlocks<DrawableModel>(ExtraPointers);
+                }
+            }
+            else
+            {
+                if (highPointer != 0)
+                {
                 HighHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)highPointer);
                 HighPointers = reader.ReadUlongsAt(HighHeader.Pointer, HighHeader.Capacity, false);
                 High = reader.ReadBlocks<DrawableModel>(HighPointers);
@@ -3133,6 +3175,9 @@ namespace CodeWalker.GameFiles
                 ExtraPointers = reader.ReadUlongsAt(ExtraHeader.Pointer, ExtraHeader.Capacity, false);
                 Extra = reader.ReadBlocks<DrawableModel>(ExtraPointers);
             }
+        }
+
+
         }
 
         public override void Write(ResourceDataWriter writer, params object[] parameters)
@@ -3401,6 +3446,25 @@ namespace CodeWalker.GameFiles
                 }
                 return val;
             }
+        }
+        public static uint[] SwapEndiannessUints(uint[] uints)
+        {
+            uint[] result = new uint[uints.Length];
+            for (int i = 0; i < uints.Length; i++)
+            {
+                result[i] = (uints[i] >> 24) | ((uints[i] >> 8) & 0x0000FF00) | ((uints[i] << 8) & 0x00FF0000) | (uints[i] << 24);
+            }
+            return result;
+        }
+
+        public static ulong[] UintsToUlongs(uint[] uints)
+        {
+            ulong[] result = new ulong[uints.Length];
+            for (int i = 0; i < uints.Length; i++)
+            {
+                result[i] = uints[i];
+            }
+            return result;
         }
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
