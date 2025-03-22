@@ -1,4 +1,4 @@
-﻿using SharpDX;
+using SharpDX;
 using System;
 using System.Collections.Generic;
 using System.ComponentModel;
@@ -3166,35 +3166,35 @@ namespace CodeWalker.GameFiles
             {
                 if (highPointer != 0)
                 {
-                HighHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)highPointer);
-                HighPointers = reader.ReadUlongsAt(HighHeader.Pointer, HighHeader.Capacity, false);
-                High = reader.ReadBlocks<DrawableModel>(HighPointers);
+                    HighHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)highPointer);
+                    HighPointers = reader.ReadUlongsAt(HighHeader.Pointer, HighHeader.Capacity, false);
+                    High = reader.ReadBlocks<DrawableModel>(HighPointers);
+                }
+                if (medPointer != 0)
+                {
+                    MedHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)medPointer);
+                    MedPointers = reader.ReadUlongsAt(MedHeader.Pointer, MedHeader.Capacity, false);
+                    Med = reader.ReadBlocks<DrawableModel>(MedPointers);
+                }
+                if (lowPointer != 0)
+                {
+                    LowHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)lowPointer);
+                    LowPointers = reader.ReadUlongsAt(LowHeader.Pointer, LowHeader.Capacity, false);
+                    Low = reader.ReadBlocks<DrawableModel>(LowPointers);
+                }
+                if (vlowPointer != 0)
+                {
+                    VLowHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)vlowPointer);
+                    VLowPointers = reader.ReadUlongsAt(VLowHeader.Pointer, VLowHeader.Capacity, false);
+                    VLow = reader.ReadBlocks<DrawableModel>(VLowPointers);
+                }
+                if (extraPointer != 0)
+                {
+                    ExtraHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)extraPointer);
+                    ExtraPointers = reader.ReadUlongsAt(ExtraHeader.Pointer, ExtraHeader.Capacity, false);
+                    Extra = reader.ReadBlocks<DrawableModel>(ExtraPointers);
+                }
             }
-            if (medPointer != 0)
-            {
-                MedHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)medPointer);
-                MedPointers = reader.ReadUlongsAt(MedHeader.Pointer, MedHeader.Capacity, false);
-                Med = reader.ReadBlocks<DrawableModel>(MedPointers);
-            }
-            if (lowPointer != 0)
-            {
-                LowHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)lowPointer);
-                LowPointers = reader.ReadUlongsAt(LowHeader.Pointer, LowHeader.Capacity, false);
-                Low = reader.ReadBlocks<DrawableModel>(LowPointers);
-            }
-            if (vlowPointer != 0)
-            {
-                VLowHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)vlowPointer);
-                VLowPointers = reader.ReadUlongsAt(VLowHeader.Pointer, VLowHeader.Capacity, false);
-                VLow = reader.ReadBlocks<DrawableModel>(VLowPointers);
-            }
-            if (extraPointer != 0)
-            {
-                ExtraHeader = reader.ReadStructAt<ResourcePointerListHeader>((long)extraPointer);
-                ExtraPointers = reader.ReadUlongsAt(ExtraHeader.Pointer, ExtraHeader.Capacity, false);
-                Extra = reader.ReadBlocks<DrawableModel>(ExtraPointers);
-            }
-        }
 
 
         }
