@@ -23,6 +23,7 @@
 //shamelessly stolen and mangled
 
 
+using CodeWalker.GameFiles;
 using SharpDX;
 using System;
 using System.Collections.Generic;
@@ -1801,7 +1802,7 @@ namespace CodeWalker.GameFiles
         public ushort Count { get; set; }
         public ushort Capacity { get; set; }
         public uint Unknown { get; set; }
-    }
+    
 
         public static explicit operator ResourcePointerListHeader(ResourcePointerListHeaderGen7 src)
         {
@@ -1822,7 +1823,7 @@ namespace CodeWalker.GameFiles
     }
 
     public struct ResourcePointerListHeaderGen7
-        {
+    {
         public uint Pointer { get; set; }
         public ushort Count { get; set; }
         public ushort Capacity { get; set; }
