@@ -3092,6 +3092,25 @@ namespace CodeWalker.GameFiles
         public ulong[] VLowPointers { get; set; }
         public ulong[] ExtraPointers { get; set; }
 
+        public static uint[] SwapEndiannessUints(uint[] uints)
+        {
+            uint[] result = new uint[uints.Length];
+            for (int i = 0; i < uints.Length; i++)
+            {
+                result[i] = (uints[i] >> 24) | ((uints[i] >> 8) & 0x0000FF00) | ((uints[i] << 8) & 0x00FF0000) | (uints[i] << 24);
+            }
+            return result;
+        }
+
+        public static ulong[] UintsToUlongs(uint[] uints)
+        {
+            ulong[] result = new ulong[uints.Length];
+            for (int i = 0; i < uints.Length; i++)
+            {
+                result[i] = uints[i];
+            }
+            return result;
+        }
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
