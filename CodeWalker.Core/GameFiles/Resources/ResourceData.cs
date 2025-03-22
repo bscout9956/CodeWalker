@@ -41,6 +41,7 @@ namespace CodeWalker.GameFiles
     public class ResourceDataReader : DataReader
     {
         public bool IsGen9 = RpfManager.IsGen9;
+        public bool IsGen7 { get; set; }
 
         private const long SYSTEM_BASE = 0x50000000;
         private const long GRAPHICS_BASE = 0x60000000;
