@@ -3496,8 +3496,8 @@ namespace CodeWalker.GameFiles
             }
             else
             {
-            this.Unknown_4h = reader.ReadUInt32();
-            this.GeometriesPointer = reader.ReadUInt64();
+                this.Unknown_4h = reader.ReadUInt32();
+                this.GeometriesPointer = reader.ReadUInt64();
             }
             this.GeometriesCount1 = reader.ReadUInt16();
             this.GeometriesCount2 = reader.ReadUInt16();
@@ -3508,9 +3508,9 @@ namespace CodeWalker.GameFiles
             }
             else
             {
-            this.Unknown_14h = reader.ReadUInt32();
-            this.BoundsPointer = reader.ReadUInt64();
-            this.ShaderMappingPointer = reader.ReadUInt64();
+                this.Unknown_14h = reader.ReadUInt32();
+                this.BoundsPointer = reader.ReadUInt64();
+                this.ShaderMappingPointer = reader.ReadUInt64();
             }
             this.SkeletonBinding = reader.ReadUInt32();
             this.RenderMaskFlags = reader.ReadUInt16();
@@ -3524,7 +3524,8 @@ namespace CodeWalker.GameFiles
             }
             else
             {
-            this.GeometryPointers = reader.ReadUlongsAt(this.GeometriesPointer, this.GeometriesCount1, false);
+                this.GeometryPointers = reader.ReadUlongsAt(this.GeometriesPointer, this.GeometriesCount1, false);
+            }
             // wrong endianness for bounds, fixme
             this.BoundsData = reader.ReadStructsAt<AABB_s>(this.BoundsPointer, (uint)(this.GeometriesCount1 > 1 ? this.GeometriesCount1 + 1 : this.GeometriesCount1), false);
             this.Geometries = reader.ReadBlocks<DrawableGeometry>(this.GeometryPointers);
@@ -6131,8 +6132,8 @@ namespace CodeWalker.GameFiles
             }
             else
             {
-            this.ShaderGroupPointer = reader.ReadUInt64();
-            this.SkeletonPointer = reader.ReadUInt64();
+                this.ShaderGroupPointer = reader.ReadUInt64();
+                this.SkeletonPointer = reader.ReadUInt64();
             }
 
             this.BoundingCenter = reader.ReadVector3();
@@ -6150,10 +6151,10 @@ namespace CodeWalker.GameFiles
             }
             else
             {
-            this.DrawableModelsHighPointer = reader.ReadUInt64();
-            this.DrawableModelsMediumPointer = reader.ReadUInt64();
-            this.DrawableModelsLowPointer = reader.ReadUInt64();
-            this.DrawableModelsVeryLowPointer = reader.ReadUInt64();
+                this.DrawableModelsHighPointer = reader.ReadUInt64();
+                this.DrawableModelsMediumPointer = reader.ReadUInt64();
+                this.DrawableModelsLowPointer = reader.ReadUInt64();
+                this.DrawableModelsVeryLowPointer = reader.ReadUInt64();
             }
             this.LodDistHigh = reader.ReadSingle();
             this.LodDistMed = reader.ReadSingle();
