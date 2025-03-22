@@ -1739,14 +1739,28 @@ namespace CodeWalker.GameFiles
         public uint Unknown { get; set; }
     }
 
+        public static explicit operator ResourcePointerListHeader(ResourcePointerListHeaderGen7 src)
+        {
 
+            ResourcePointerListHeader resourcePointerListHeader = new ResourcePointerListHeader
+            {
+                Pointer = src.Pointer >> 24 | ((src.Pointer >> 8) & 0x0000FF00) | ((src.Pointer << 8) & 0x00FF0000) | (src.Pointer << 24),
+                Count = src.Count,
+                Capacity = src.Capacity,
+                Unknown = src.Unknown >> 24 | ((src.Unknown >> 8) & 0x0000FF00) | ((src.Unknown << 8) & 0x00FF0000) | (src.Unknown << 24),
+            };
+            return resourcePointerListHeader;
 
+        }
+    }
 
-
-
-
-
-
+    public struct ResourcePointerListHeaderGen7
+        {
+        public uint Pointer { get; set; }
+        public ushort Count { get; set; }
+        public ushort Capacity { get; set; }
+        public uint Unknown { get; set; }
+    }
 
     public class ResourceSystemDataBlock : ResourceSystemBlock //used for writing resources.
     {
