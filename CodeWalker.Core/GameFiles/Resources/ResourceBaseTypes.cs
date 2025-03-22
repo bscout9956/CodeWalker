@@ -859,7 +859,14 @@ namespace CodeWalker.GameFiles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
+            if (reader.IsGen7)
+            {
+                this.EntriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.EntriesPointer = reader.ReadUInt64();
+            }
             this.EntriesCount = reader.ReadUInt16();
             this.EntriesCapacity = reader.ReadUInt16();
             reader.Position += 4;
@@ -942,7 +949,14 @@ namespace CodeWalker.GameFiles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
+            if (reader.IsGen7)
+            {
+                this.EntriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.EntriesPointer = reader.ReadUInt64();
+            }
             this.EntriesCount = reader.ReadUInt32();
             this.EntriesCapacity = reader.ReadUInt32();
             //reader.Position += 4;
@@ -1020,7 +1034,14 @@ namespace CodeWalker.GameFiles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
+            if (reader.IsGen7)
+            {
+                this.EntriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.EntriesPointer = reader.ReadUInt64();
+            }
             this.EntriesCount = reader.ReadUInt16();
             this.EntriesCapacity = reader.ReadUInt16();
             reader.Position += 4;
@@ -1098,7 +1119,14 @@ namespace CodeWalker.GameFiles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
+            if (reader.IsGen7)
+            {
+                this.EntriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.EntriesPointer = reader.ReadUInt64();
+            }
             this.EntriesCount = reader.ReadUInt16();
             this.EntriesCapacity = reader.ReadUInt16();
             reader.Position += 4;
@@ -1176,7 +1204,14 @@ namespace CodeWalker.GameFiles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
+            if (reader.IsGen7)
+            {
+                this.EntriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.EntriesPointer = reader.ReadUInt64();
+            }
             this.EntriesCount = reader.ReadUInt16();
             this.EntriesCapacity = reader.ReadUInt16();
             reader.Position += 4;
@@ -1254,7 +1289,14 @@ namespace CodeWalker.GameFiles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
+            if (reader.IsGen7)
+            {
+                this.EntriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.EntriesPointer = reader.ReadUInt64();
+            }
             this.EntriesCount = reader.ReadUInt16();
             this.EntriesCapacity = reader.ReadUInt16();
             reader.Position += 4;
@@ -1332,7 +1374,15 @@ namespace CodeWalker.GameFiles
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
             // read structure data
+            if (reader.IsGen7)
+            {
+                this.EntriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.EntriesPointer = reader.ReadUInt64();
+
+            }
             this.EntriesCount = reader.ReadUInt16();
             this.EntriesCapacity = reader.ReadUInt16();
             reader.Position += 4;
@@ -1592,7 +1642,14 @@ namespace CodeWalker.GameFiles
 
         public override void Read(ResourceDataReader reader, params object[] parameters)
         {
+            if (reader.IsGen7)
+            {
+                this.EntriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.EntriesPointer = reader.ReadUInt64();
+            }
             this.EntriesCount = reader.ReadUInt16();
             this.EntriesCapacity = reader.ReadUInt16();
             reader.Position += 4;
@@ -1748,12 +1805,15 @@ namespace CodeWalker.GameFiles
 
         public static explicit operator ResourcePointerListHeader(ResourcePointerListHeaderGen7 src)
         {
-
+            // Below we do a bunch of endianness swap because Gen7
+            // otherwise we get incorrect pointers and capacity values
+            // risking going over invalid addresses
             ResourcePointerListHeader resourcePointerListHeader = new ResourcePointerListHeader
             {
                 Pointer = src.Pointer >> 24 | ((src.Pointer >> 8) & 0x0000FF00) | ((src.Pointer << 8) & 0x00FF0000) | (src.Pointer << 24),
-                Count = src.Count,
-                Capacity = src.Capacity,
+                // Do we need to fix the count and capacity? I forgot, should be fine?
+                Count = (ushort)((src.Count >> 8) | (src.Count << 8)),
+                Capacity = (ushort)((src.Capacity >> 8) | (src.Capacity << 8)),
                 Unknown = src.Unknown >> 24 | ((src.Unknown >> 8) & 0x0000FF00) | ((src.Unknown << 8) & 0x00FF0000) | (src.Unknown << 24),
             };
             return resourcePointerListHeader;
