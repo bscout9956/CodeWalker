@@ -3471,19 +3471,42 @@ namespace CodeWalker.GameFiles
         {
             // read structure data
             this.VFT = reader.ReadUInt32();
+            if (reader.IsGen7)
+            {
+                this.GeometriesPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.Unknown_4h = reader.ReadUInt32();
             this.GeometriesPointer = reader.ReadUInt64();
+            }
             this.GeometriesCount1 = reader.ReadUInt16();
             this.GeometriesCount2 = reader.ReadUInt16();
+            if (reader.IsGen7)
+            {
+                this.BoundsPointer = reader.ReadUInt32();
+                this.ShaderMappingPointer = reader.ReadUInt32(); // is this a thing on gen7?
+            }
+            else
+            {
             this.Unknown_14h = reader.ReadUInt32();
             this.BoundsPointer = reader.ReadUInt64();
             this.ShaderMappingPointer = reader.ReadUInt64();
+            }
             this.SkeletonBinding = reader.ReadUInt32();
             this.RenderMaskFlags = reader.ReadUInt16();
             this.GeometriesCount3 = reader.ReadUInt16();
 
             this.ShaderMapping = reader.ReadUshortsAt(this.ShaderMappingPointer, this.GeometriesCount1, false);
+            if (reader.IsGen7)
+            {
+                uint[] geometryPointersData = reader.ReadUintsAt(this.GeometriesPointer, this.GeometriesCount1, false);
+                this.GeometryPointers = UintsToUlongs(SwapEndiannessUints(geometryPointersData));
+            }
+            else
+            {
             this.GeometryPointers = reader.ReadUlongsAt(this.GeometriesPointer, this.GeometriesCount1, false);
+            // wrong endianness for bounds, fixme
             this.BoundsData = reader.ReadStructsAt<AABB_s>(this.BoundsPointer, (uint)(this.GeometriesCount1 > 1 ? this.GeometriesCount1 + 1 : this.GeometriesCount1), false);
             this.Geometries = reader.ReadBlocks<DrawableGeometry>(this.GeometryPointers);
 
