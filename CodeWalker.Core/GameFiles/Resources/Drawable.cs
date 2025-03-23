@@ -6800,10 +6800,20 @@ namespace CodeWalker.GameFiles
             base.Read(reader, parameters);
 
             // read structure data
+            if (reader.IsGen7) //untested
+            {
+                this.NamePointer = reader.ReadUInt32();
+                this.LightAttributes = reader.ReadBlock<ResourceSimpleList64<LightAttributes>>(); // for Gen7 might require a new data type or a conversion of some sorts
+                this.UnkPointer = reader.ReadUInt32();
+                this.BoundPointer = reader.ReadUInt32();
+            }
+            else
+            {
             this.NamePointer = reader.ReadUInt64();
             this.LightAttributes = reader.ReadBlock<ResourceSimpleList64<LightAttributes>>();
             this.UnkPointer = reader.ReadUInt64();
             this.BoundPointer = reader.ReadUInt64();
+            }
 
             try
             {
