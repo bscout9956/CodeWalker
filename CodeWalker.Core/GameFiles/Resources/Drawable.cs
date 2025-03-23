@@ -3127,7 +3127,7 @@ namespace CodeWalker.GameFiles
             if (reader.IsGen7)
             {
             if (highPointer != 0)
-            {
+                {
                     HighHeader = (ResourcePointerListHeader)reader.ReadStructAt<ResourcePointerListHeaderGen7>((long)highPointer);
                     uint[] fetchedUints = reader.ReadUintsAt(HighHeader.Pointer, HighHeader.Capacity, false);
                     HighPointers = UintsToUlongs(SwapEndiannessUints(fetchedUints));
@@ -3528,7 +3528,7 @@ namespace CodeWalker.GameFiles
             }
             // wrong endianness for bounds, fixme
             this.BoundsData = reader.ReadStructsAt<AABB_s>(this.BoundsPointer, (uint)(this.GeometriesCount1 > 1 ? this.GeometriesCount1 + 1 : this.GeometriesCount1), false);
-            this.Geometries = reader.ReadBlocks<DrawableGeometry>(this.GeometryPointers);
+            //this.Geometries = reader.ReadBlocks<DrawableGeometry>(this.GeometryPointers);
 
             if (Geometries != null)
             {
@@ -6174,14 +6174,14 @@ namespace CodeWalker.GameFiles
             }
             this.Unknown_98h = reader.ReadUInt16();
             this.DrawableModelsBlocksSize = reader.ReadUInt16();
-            this.Unknown_9Ch = reader.ReadUInt32();
             if (reader.IsGen7)
             {
                 this.DrawableModelsPointer = reader.ReadUInt32();
             }
             else
             {
-            this.DrawableModelsPointer = reader.ReadUInt64();
+                this.Unknown_9Ch = reader.ReadUInt32(); // should we read this on gen7?
+                this.DrawableModelsPointer = reader.ReadUInt64();
             }
             // read reference data
             this.ShaderGroup = reader.ReadBlockAt<ShaderGroup>(this.ShaderGroupPointer);
