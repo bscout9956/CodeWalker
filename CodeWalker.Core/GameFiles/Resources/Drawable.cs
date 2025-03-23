@@ -3526,9 +3526,9 @@ namespace CodeWalker.GameFiles
             {
                 this.GeometryPointers = reader.ReadUlongsAt(this.GeometriesPointer, this.GeometriesCount1, false);
             }
-            // wrong endianness for bounds, fixme
+            // wrong endianness for bounds in gen7, fixme
             this.BoundsData = reader.ReadStructsAt<AABB_s>(this.BoundsPointer, (uint)(this.GeometriesCount1 > 1 ? this.GeometriesCount1 + 1 : this.GeometriesCount1), false);
-            //this.Geometries = reader.ReadBlocks<DrawableGeometry>(this.GeometryPointers);
+            this.Geometries = reader.ReadBlocks<DrawableGeometry>(this.GeometryPointers);
 
             if (Geometries != null)
             {
